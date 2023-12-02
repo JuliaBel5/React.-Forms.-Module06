@@ -7,7 +7,7 @@ import countries from '../utils/countries.json';
 //import { Link } from 'react-router-dom';
 import { useAppDispatch } from '../store/MarsSlice';
 import { useNavigate } from 'react-router-dom';
-
+import Select from 'react-select';
 
 
 type FormValues = {
@@ -19,7 +19,7 @@ type FormValues = {
   confirmPassword: string;
   gender: string;
  termsAndConditions: boolean;
- // picture: FileList;
+  picture: FileList;
   country: string;
  };
 
@@ -32,33 +32,38 @@ const schema = yup.object().shape({
  confirmPassword: yup.string().oneOf([yup.ref('password')], 'Passwords must match').required('Confirm Password is required'),
   gender: yup.string().required(),
   termsAndConditions: yup.boolean().oneOf([true], 'You must accept the terms and conditions').required('You must accept the terms and conditions'),
- // picture: yup.mixed().required('Please upload a picture'),
-   country: yup.string().required(),
+  picture: yup
+  .mixed<FileList>()
+  .required("Please upload a picture")
+  .transform((value: FileList) => {
+    if (!value.length) return value
+    return URL.createObjectURL(value[0]);
+  }),
+   country: yup.string().required('You should choose a country'),
 });
 
 
 export function MoonForm() {
   const dispatch = useAppDispatch()
-  const { register, handleSubmit, formState: { errors, isDirty, isValid }} = useForm<FormValues>({ resolver: yupResolver(schema) });
   
+  const {
+    register,
+    handleSubmit,
+    setValue,
+    formState: { errors, isDirty, isValid },
+  } = useForm<FormValues>({
+    resolver: yupResolver(schema),
+    mode: "onChange",
+    reValidateMode: "onChange",
+  });
  const navigate = useNavigate();
  
-  //const onFileChange = (_event: React.ChangeEvent<HTMLInputElement>) => {
     const onSubmit = (data: FormValues) => {
       console.log(data)
       dispatch(moonActions.setMoonState(data));
     
-     /* dispatch(moonActions.setLastName(data.lastName));
-      dispatch(moonActions.setAge(data.age));
-      dispatch(moonActions.setEmail(data.email));
-      dispatch(moonActions.setPassword(data.password));
-      dispatch(moonActions.setConfirmPassword(data.confirmPassword));
-      dispatch(moonActions.setTermsAndConditions(data.termsAndConditions));
-      dispatch(moonActions.setGender(data.gender));
-      dispatch(moonActions.setCountry(data.country));*/
-      setTimeout(() => {
-        navigate("/");
-      }, 2000);
+           navigate("/");
+   
       
     };
  
@@ -66,39 +71,40 @@ export function MoonForm() {
     <div className="moon">
       <form onSubmit={handleSubmit(onSubmit)} className="moon-form">
       <input {...register("firstName", { required: true })} placeholder="First Name" />
-       {errors.firstName && <p>First Name is required</p>}
+       {errors.firstName && <p className="errorField">First Name is required</p>}
   
        <input {...register("lastName", { required: true })} placeholder="Last Name" />
-       {errors.lastName && <p>Last Name is required</p>}
+       {errors.lastName && <p className="errorField">Last Name is required</p>}
   
        <input {...register("age", { required: true, valueAsNumber: true })} placeholder="Age" />
-       {errors.age && <p>Age is required</p>}
+       {errors.age && <p className="errorField">Age is required</p>}
         <input {...register("email")} placeholder="Email" />
-        {errors.email && <p>Email is invalid</p>}
+        {errors.email && <p className="errorField">Email is invalid</p>}
  
         <input {...register("password")} type="password" placeholder="Password" />
-        {errors.password && <p>{errors.password.message}</p>}
+        {errors.password && <p className="errorField">{errors.password.message}</p>}
  
         <input {...register("confirmPassword")} type="password" placeholder="Confirm Password" />
-        {errors.confirmPassword && <p>Passwords must match</p>}
- 
+        {errors.confirmPassword && <p className="errorField">Passwords must match</p>}
+ <div className='radio-buttons'>
         <label>
-          <input {...register("gender")} type="radio" value="male" /> Male
+          <input {...register("gender")} type="radio" value="male" className="radioButton"/> Male
         </label>
         <label>
-          <input {...register("gender")} type="radio" value="female" /> Female
+          <input {...register("gender")} type="radio" value="female" className="radioButton"/> Female
         </label>
-        {errors.gender && <p>Please select your gender</p>}
- 
+        {errors.gender && <p className="errorField">Please select your gender</p>}
+        </div>
         <label>
-          <input {...register("termsAndConditions")} type="checkbox" /> I accept the terms and conditions
+          <input {...register("termsAndConditions")} type="checkbox" className="radioButton"/> I accept the terms and conditions
         </label>
-        {errors.termsAndConditions && <p>You must accept the terms and conditions</p>}
+        {errors.termsAndConditions && <p className="errorField">You must accept the terms and conditions</p>}
  
-       {/* <input type="file" onChange={onFileChange} />
-        {errors.picture && <p>{errors.picture.message}</p>}*/}
+       {/* <input type="file" onChange={onFileChange} /> */}
+       {<input type="file" {...register("picture")} />}
+        {errors.picture && <p className="errorField">{errors.picture.message}</p>}
  
- <select {...register("country")}>
+ {/*<select {...register("country")}>
  <option value="">Select country</option>
  {countries.map((country) => (
    <option key={country.code} value={country.code}>
@@ -106,9 +112,20 @@ export function MoonForm() {
    </option>
  ))}
 </select>
-        {errors.country && <p>Please select your country</p>}
+        {errors.country && <p className="errorField">Please select your country</p>}*/}
  
-     
+        <Select
+         {...register("country", { required: 'Please select a country' })}
+         options={countries.map((country) => ({ value: country.code, label: country.name }))}
+         onChange={(selectedOption) => {
+          if (selectedOption) {
+            setValue('country', selectedOption.value);
+          } else {
+            setValue('country', '');
+          }
+          }}
+          className = "select" />
+       {errors.country && <p className="errorField">{errors.country.message}</p>}
  <button type="submit" disabled={!isDirty || !isValid} className="submitButton">Submit</button>
 
       </form>

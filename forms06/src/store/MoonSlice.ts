@@ -11,7 +11,7 @@ export interface MoonFormState {
   confirmPassword: string;
   gender: string;
  termsAndConditions: boolean;
- // picture: FileList;
+  picture: string;
   country: string;
 }
 
