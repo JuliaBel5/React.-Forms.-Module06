@@ -1,31 +1,40 @@
 import { createSlice } from '@reduxjs/toolkit'
 
 
+
 export interface MoonFormState {
-  moonFirstName: string
-  moonLastName: string
-  moonAge: number
+  firstName: string;
+  lastName: string;
+  age: number;
+  email: string;
+  password: string;
+  confirmPassword: string;
+  gender: string;
+ termsAndConditions: boolean;
+ // picture: FileList;
+  country: string;
 }
-const initialState: MoonFormState = {
-  moonFirstName: "",
-  moonLastName: "",
-  moonAge: 0,
+
+interface MoonState {
+  moonData: MoonFormState[];
+  moonTilesNumber: number
+ }
+const initialState: MoonState = {
+  moonData: [],
+  moonTilesNumber: 0
 }
 
 export const moonSlice = createSlice({
   name: 'moon',
   initialState,
   reducers: {
-    setMoonFirstName: (state, action) => {
-      state.moonLastName = action.payload
+    setMoonState: (state, action) => {
+      state.moonData.push(action.payload);
     },
-      setMoonLastName: (state, action) => {
-      state.moonFirstName = action.payload
+    setMoonTilesNumber: (state, action) => {
+      state.moonTilesNumber = action.payload
     },
-    setMoonAge: (state, action) => {
-      state.moonAge = action.payload
-    },
-  },
-})
+  }
+ })
 
 export const { reducer: moonReducer, actions: moonActions } = moonSlice

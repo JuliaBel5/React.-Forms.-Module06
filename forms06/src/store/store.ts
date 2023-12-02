@@ -5,8 +5,8 @@ import { marsReducer } from './MarsSlice'
 
 export const store: Store = configureStore({
   reducer: {
-    moonFormSlice: moonReducer,
-    marsFormSlice: marsReducer,
+    moon: moonReducer,
+    mars: marsReducer,
     
   },
   
