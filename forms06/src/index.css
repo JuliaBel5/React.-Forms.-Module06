@@ -32,13 +32,21 @@ body {
   background-color: #070225;
   background-image: url('./assets/background.jpg');
   background-size: cover;
-  background-repeat: no-repeat;
-  background-attachment: fixed;
+  background-repeat: repeat;
+
 }
 
 h1 {
   font-size: 3.2em;
   line-height: 1.1;
+}
+
+.main-title {
+  font-size: 2em;
+}
+
+h2 {
+  font-size: 1.5em;
 }
 
 button {
@@ -282,10 +290,26 @@ button:focus-visible {
   flex: 0 0 calc(33.33% - 20px);
   align-content: center;
   align-items: center;
-  width: 250px;
+  min-width: 150px;
   font-size: 16px;
   padding: 5px;
   border: 2px solid rgba(241, 232, 62, 0.8);
+  border-radius: 7px;
+  background: rgba(242, 245, 212, 0.19);
+  border-radius: 16px;
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+}
+
+.mars-tile {
+  display: flex;
+  flex-direction: column;
+  flex: 0 0 calc(33.33% - 20px);
+  align-content: center;
+  align-items: center;
+  min-width: 150px;
+  font-size: 16px;
+  padding: 5px;
+  border: 2px solid rgba(231, 95, 95, 0.8);
   border-radius: 7px;
   background: rgba(242, 245, 212, 0.19);
   border-radius: 16px;
@@ -303,6 +327,10 @@ button:focus-visible {
 }
 
 .tile:last-child {
+  animation: highlight 3s linear alternate both;
+}
+
+.mars-tile:last-child {
   animation: highlight 3s linear alternate both;
 }
 

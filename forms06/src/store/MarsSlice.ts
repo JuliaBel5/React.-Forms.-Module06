@@ -3,31 +3,40 @@ import { TypedUseSelectorHook, useSelector, useDispatch } from 'react-redux'
 import { store } from './store'
 
 
-export interface marsFormState {
-  marsFirstName: string
-  marsLastName: string
-  marsAge: number
+export interface MarsFormState {
+  firstName: string;
+  lastName: string;
+  age: number;
+  email: string;
+  password: string;
+  confirmPassword: string;
+  gender: string;
+ termsAndConditions: boolean;
+  picture: string;
+  country: string;
 }
-const initialState: marsFormState = {
-  marsFirstName: "",
-  marsLastName: "",
-  marsAge: 0,
+
+interface MarsState {
+  marsData: MarsFormState[];
+  marsTilesNumber: number
+ }
+
+ const initialState: MarsState = {
+  marsData: [],
+  marsTilesNumber: 0
 }
 
 export const marsSlice = createSlice({
   name: 'mars',
   initialState,
   reducers: {
-    setMarsFirstName: (state, action) => {
-      state.marsLastName = action.payload
+    setMarsState: (state, action) => {
+      state.marsData.push(action.payload);
     },
-      setMarsLastName: (state, action) => {
-      state.marsFirstName = action.payload
+    setMoonTilesNumber: (state, action) => {
+      state.marsTilesNumber = action.payload
     },
-    setMarsAge: (state, action) => {
-      state.marsAge = action.payload
-    },
-  },
+  }
 })
 
 export const { reducer: marsReducer, actions: marsActions } = marsSlice
