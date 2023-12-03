@@ -19,6 +19,7 @@ export const Tile = ({ data }: TileProps) => {
   return (
     <div className="tile">
       <div className="tile-title">{data.firstName + ' ' + data.lastName}</div>
+      <div className="tile-subtitle">Destination: Moon</div>
       <div className="tile-line">
         <div >Age: {data.age}</div>
       </div>

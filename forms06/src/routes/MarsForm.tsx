@@ -5,31 +5,25 @@ import countries from '../utils/countries.json';
 import { useAppDispatch } from '../store/MarsSlice';
 import { useNavigate } from 'react-router-dom';
 
-
-
 const schema = yup.object().shape({
-  firstName: yup.string().required().matches(/^[A-Z]/, 'First letter should be capitalized'),
-  lastName: yup.string().required().matches(/^[A-Z]/, 'First letter should be capitalized'),
-  age: yup.number().required().positive().integer(),
-  email: yup.string().required().email(),
-  password: yup.string().required().matches(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/, 'Password should contain at least 1 uppercase letter, 1 lowercase letter, 1 number, and 1 special character'),
+  firstName: yup.string().required('Please, enter your name').matches(/^[A-Z]/, 'First letter should be capitalized'),
+  lastName: yup.string().required('Please, enter your last name').matches(/^[A-Z]/, 'First letter should be capitalized'),
+  age: yup.number().required("Please, enter your age").positive("Please, enter valid a number").integer("Please. enter a number"),
+  email: yup.string().required("Please, enter your e-mail address").email(),
+  password: yup.string().required('Please, enter a password').matches(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/, 'Password should contain at least 1 uppercase letter, 1 lowercase letter, 1 number, and 1 special character'),
   confirmPassword: yup.string().oneOf([yup.ref('password')], 'Passwords must match').required('Confirm Password is required'),
-  gender: yup.string().required(),
+  gender: yup.string().required("Please, make your choice"),
   termsAndConditions: yup.boolean().oneOf([true], 'You must accept the terms and conditions').required('You must accept the terms and conditions'),
   picture: yup
     .mixed<FileList>()
     .required("Please upload a picture")
-    /*.transform((value: FileList) => {
-      if (!value.length) return value
-      return URL.createObjectURL(value[0]);
-    }),*/,
+  ,
   country: yup.string().required('You should choose a country'),
 });
 
 export function MarsForm() {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
-
   const [errors, setErrors] = useState<Errors>({});
 
   const firstName = useRef<HTMLInputElement>(null);
@@ -43,51 +37,8 @@ export function MarsForm() {
   const picture = useRef<HTMLInputElement>(null);
   const country = useRef<HTMLSelectElement>(null);
 
-
-
-
-  const onSubmit = (event: { preventDefault: () => void; }) => {
+  const onSubmit = async (event: { preventDefault: () => void; }) => {
     event.preventDefault();
-
-    /*const formData = new FormData();
-
-    if (firstName.current?.value) {
-      formData.append('firstName', firstName.current.value);
-    }
-    if (lastName.current?.value) {
-      formData.append('lastName', lastName.current.value);
-    }
-    if (age.current?.value) {
-      formData.append('age', age.current.value);
-    }
-    if (email.current?.value) {
-      formData.append('email', email.current.value);
-    }
-    if (password.current?.value) {
-      formData.append('password', password.current.value);
-    }
-    if (confirmPassword.current?.value) {
-      formData.append('confirmPassword', confirmPassword.current.value);
-    }
-    if (gender.current?.value) {
-      formData.append('gender', gender.current.value);
-    }
-
-    if (termsAndConditions.current?.checked) {
-      formData.append('termsAndConditions', termsAndConditions.current.checked.toString());
-    }
-    if (picture.current?.files?.[0]) {
-      formData.append('picture', picture.current.files[0]);
-    }
-    if (country.current?.value) {
-      formData.append('country', country.current.value);
-    }
-
-    // Convert FormData to a plain object
-    const values = Object.fromEntries(formData.entries());*/
-
-
-
 
     const values = {
       firstName: firstName.current?.value,
@@ -102,47 +53,49 @@ export function MarsForm() {
       country: country.current?.value,
     };
 
-
-
-    schema
-      .validate(values)
-      .then(() => {
-        dispatch(marsActions.setMarsState(values));
-        navigate("/");
+    try {
+      await schema.validate(values, {
+        abortEarly: false
       })
-      .catch((error) => {
-        console.log(error);
-        setErrors(error.inner.reduce((errors: Errors, err: yup.ValidationError) => {
-          if (err.path !== undefined) {
-            errors[err.path as keyof Errors] = err.message;
+      dispatch(marsActions.setMarsState(values));
+      navigate("/");
+    } catch (err) {
+      if (err instanceof yup.ValidationError) {
+        const errors = err.inner.reduce<Record<string, string>>((acc, cur) => {
+          if (cur.path) {
+            const key = cur.path
+            acc[key] = cur.message
           }
-          return errors;
-        }, {} as Errors));
-      });
-  };
+          return acc
+        }, {});
 
+        setErrors(errors)
+      }
+    }
+  }
   return (
     <div className="mars">
       <form onSubmit={onSubmit} className="moon-form">
         <input ref={firstName} placeholder="First Name" />
-        {errors.firstName && <p>{errors.firstName}</p>}
+        {errors.firstName && <p className="errorFieldMars">{errors.firstName}</p>}
         <input ref={lastName} placeholder="Last Name" />
-        {errors.lastName && <p>{errors.lastName}</p>}
+        {errors.lastName && <p className="errorFieldMars">{errors.lastName}</p>}
         <input type="number" ref={age} placeholder="Age" />
-        {errors.age && <p>{errors.age}</p>}
+        {errors.age && <p className="errorFieldMars">{errors.age}</p>}
         <input ref={email} placeholder="E-mail" />
-        {errors.email && <p>{errors.email}</p>}
+        {errors.email && <p className="errorFieldMars">{errors.email}</p>}
         <input ref={password} type="password" placeholder="Password" />
-        {errors.password && <p>{errors.password}</p>}
+        {errors.password && <p className="errorFieldMars">{errors.password}</p>}
         <input ref={confirmPassword} type="password" placeholder="Confirm Password" />
-        {errors.confirmPassword && <p>The password should match</p>}
-        <div>
+        {errors.confirmPassword && <p className="errorFieldMars">{errors.confirmPassword}</p>}
+        <div className='radio-buttons'>
           <input
             type="radio"
             id="male"
             name="gender"
             value="Male"
             ref={gender}
+            className="radioButton"
           />
           {errors.gender && <p>{errors.gender}</p>}
           <label htmlFor="male">Male</label>
@@ -153,25 +106,26 @@ export function MarsForm() {
             name="gender"
             value="Female"
             ref={gender}
+            className="radioButton"
           />
-          {errors.gender && <p>{errors.gender}</p>}
+          {errors.gender && <p className="errorFieldMars">{errors.gender}</p>}
           <label htmlFor="female">Female</label>
         </div>
         <label>
-          <input type="checkbox" ref={termsAndConditions} />
+          <input type="checkbox" ref={termsAndConditions} className="radioButton" />
           I accept the terms and conditions
         </label>
-        {errors.termsAndConditions && <p>You must accept the Terms and Conditions</p>}
+        {errors.termsAndConditions && <p className="errorFieldMars">You must accept the Terms and Conditions</p>}
 
         <input type="file" ref={picture} placeholder="Picture" />
-        {errors.picture && <p className="errorField">Please, upload a picture</p>}
+        {errors.picture && <p className="errorFieldMars">Please, upload a picture</p>}
         <select name="country" ref={country}>
           <option value="">Select the country</option>
           {countries.map((country) => (
             <option key={country.code} value={country.code}>{country.name}</option>
           ))}
         </select>
-        {errors.country && <p className="errorField">Please select your country</p>}
+        {errors.country && <p className="errorFieldMars">Please select your country</p>}
         <input type="submit" className="submitButton" />
       </form>
     </div>

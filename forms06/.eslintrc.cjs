@@ -1,21 +1,16 @@
-module.exports = {
-  root: true,
-  env: { browser: true, es2020: true },
-  extends: [
-    'eslint:recommended',
-    'plugin:@typescript-eslint/recommended',
-    'plugin:react-hooks/recommended',
-  ],
-  ignorePatterns: ['dist', '.eslintrc.cjs'],
-  parser: '@typescript-eslint/parser',
-  plugins: ['react-refresh'],
-  rules: {
-    'react-refresh/only-export-components': [
-      'warn',
-      { allowConstantExport: true },
-    ],
-    '@typescript-eslint/no-explicit-any': 'error',
-  },
-}
+const {
+    configure,
+    presets
+} = require("eslint-kit");
 
+module.exports = configure({
+    allowDebug: process.env.NODE_ENV !== "production",
 
+    presets: [
+        presets.imports(),
+        presets.node(),
+        presets.prettier(),
+        presets.typescript(),
+        presets.react()
+    ]
+});

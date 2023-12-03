@@ -19,6 +19,7 @@ export const MarsTile = ({ data }: TileProps) => {
   return (
     <div className="mars-tile">
       <div className="tile-title">{data.firstName + ' ' + data.lastName}</div>
+      <div className="tile-subtitle">Destination: Mars</div>
       <div className="tile-line">
         <div >Age: {data.age}</div>
       </div>
