@@ -35,7 +35,26 @@ const schema = yup.object().shape({
     .boolean()
     .oneOf([true], 'You must accept the terms and conditions')
     .required('You must accept the terms and conditions'),
-  picture: yup.mixed<FileList>().required('Please upload a picture'),
+  picture: yup
+    .mixed<FileList>()
+    .required('Please upload a picture')
+    /* .test('fileSize', 'The file is too large', (value) => {
+      return value && value[0].size <= 2000000
+    })
+     .test(
+      'type',
+      'Only the following formats are accepted: .jpeg, .jpg, .bmp, .pdf and .doc',
+      (value) => {
+        return (
+          value &&
+          ['image/jpg', 'image/jpeg', 'image/png'].includes(value[0].type)
+        )
+      },
+    )*/
+    .transform((value: FileList) => {
+      if (value.length === 0) return value
+      return URL.createObjectURL(value[0])
+    }),
 
   country: yup.string().required('You should choose a country'),
 })
@@ -68,17 +87,16 @@ export function MarsForm() {
       confirmPassword: confirmPassword.current?.value,
       gender: gender.current?.value,
       termsAndConditions: termsAndConditions.current?.checked,
-      picture: URL.createObjectURL(
-        picture.current?.files?.[0] ?? new File(['ellie'], 'ellie.png'),
-      ),
+      picture: picture.current?.files,
       country: country.current?.value,
     }
 
     try {
-      await schema.validate(values, {
+      const _values = await schema.validate(values, {
         abortEarly: false,
       })
-      dispatch(marsActions.setMarsState(values))
+      console.log(_values)
+      dispatch(marsActions.setMarsState(_values))
       navigate('/')
     } catch (error) {
       if (error instanceof yup.ValidationError) {

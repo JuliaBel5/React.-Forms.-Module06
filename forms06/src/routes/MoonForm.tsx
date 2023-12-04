@@ -1,8 +1,8 @@
 import { yupResolver } from '@hookform/resolvers/yup'
 import { useForm } from 'react-hook-form'
 import { useNavigate } from 'react-router-dom'
-import Select from 'react-select'
 import * as yup from 'yup'
+//import { Select } from '../components/Autocomplete'
 import { useAppDispatch } from '../store/MarsSlice'
 import { moonActions } from '../store/MoonSlice'
 import countries from '../utils/countries.json'
@@ -19,9 +19,6 @@ interface FormValues {
   picture: FileList
   country: string
 }
-
-//const MAX_FILE_SIZE = 104857600
-//const validFileExtensions = ['image/jpg', 'image/png']
 
 const schema = yup.object().shape({
   firstName: yup
@@ -57,6 +54,24 @@ const schema = yup.object().shape({
   picture: yup
     .mixed<FileList>()
     .required('Please upload a picture')
+    .test('fileSize', 'The file is too large', (_, { originalValue }) => {
+      const file = originalValue[0]
+
+      if (file) {
+        return file.size <= 2000000
+      }
+    })
+    .test(
+      'type',
+      'Only the following formats are accepted: .jpeg, .jpg, .png',
+      (_, { originalValue }) => {
+        const file = originalValue[0]
+
+        if (file) {
+          return ['image/jpg', 'image/jpeg', 'image/png'].includes(file.type)
+        }
+      },
+    )
     .transform((value: FileList) => {
       if (value.length === 0) return value
       return URL.createObjectURL(value[0])
@@ -168,21 +183,16 @@ export function MoonForm() {
           <p className="errorField">{errors.picture.message}</p>
         )}
 
-        <Select
-          {...register('country', { required: 'Please select a country' })}
-          options={countries.map((country) => ({
-            value: country.code,
-            label: country.name,
-          }))}
-          onChange={(selectedOption) => {
-            if (selectedOption) {
-              setValue('country', selectedOption.value)
-            } else {
-              setValue('country', '')
-            }
-          }}
-          className="select"
-        />
+        <select
+          {...register('country', { required: 'You should choose a country' })}
+        >
+          <option value="">Select the country</option>
+          {countries.map((country) => (
+            <option key={country.code} value={country.code}>
+              {country.name}
+            </option>
+          ))}
+        </select>
         {errors.country && (
           <p className="errorField">{errors.country.message}</p>
         )}
@@ -197,3 +207,5 @@ export function MoonForm() {
     </div>
   )
 }
+
+export default MoonForm
