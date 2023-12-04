@@ -1,29 +1,28 @@
 import { createSlice } from '@reduxjs/toolkit'
-import { TypedUseSelectorHook, useSelector, useDispatch } from 'react-redux'
+import { TypedUseSelectorHook, useDispatch, useSelector } from 'react-redux'
 import { store } from './store'
 
-
 export interface MarsFormState {
-  firstName: string;
-  lastName: string;
-  age: number;
-  email: string;
-  password: string;
-  confirmPassword: string;
-  gender: string;
- termsAndConditions: boolean;
-  picture: string;
-  country: string;
+  firstName: string
+  lastName: string
+  age: number
+  email: string
+  password: string
+  confirmPassword: string
+  gender: string
+  termsAndConditions: boolean
+  picture: string
+  country: string
 }
 
 interface MarsState {
-  marsData: MarsFormState[];
+  marsData: MarsFormState[]
   marsTilesNumber: number
- }
+}
 
- const initialState: MarsState = {
+const initialState: MarsState = {
   marsData: [],
-  marsTilesNumber: 0
+  marsTilesNumber: 0,
 }
 
 export const marsSlice = createSlice({
@@ -31,12 +30,12 @@ export const marsSlice = createSlice({
   initialState,
   reducers: {
     setMarsState: (state, action) => {
-      state.marsData.push(action.payload);
+      state.marsData.push(action.payload)
     },
     setMoonTilesNumber: (state, action) => {
       state.marsTilesNumber = action.payload
     },
-  }
+  },
 })
 
 export const { reducer: marsReducer, actions: marsActions } = marsSlice

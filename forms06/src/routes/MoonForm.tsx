@@ -20,6 +20,9 @@ interface FormValues {
   country: string
 }
 
+//const MAX_FILE_SIZE = 104857600
+//const validFileExtensions = ['image/jpg', 'image/png']
+
 const schema = yup.object().shape({
   firstName: yup
     .string()
@@ -164,16 +167,6 @@ export function MoonForm() {
         {errors.picture && (
           <p className="errorField">{errors.picture.message}</p>
         )}
-
-        {/*<select {...register("country")}>
- <option value="">Select country</option>
- {countries.map((country) => (
-   <option key={country.code} value={country.code}>
-     {country.name}
-   </option>
- ))}
-</select>
-        {errors.country && <p className="errorField">Please select your country</p>}*/}
 
         <Select
           {...register('country', { required: 'Please select a country' })}

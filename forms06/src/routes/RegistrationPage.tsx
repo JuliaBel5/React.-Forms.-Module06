@@ -7,8 +7,6 @@ export const RegistrationPage = () => {
   const moonState = useAppSelector((state) => state.moon.moonData)
   const marsState = useAppSelector((state) => state.mars.marsData)
 
-  //console.log("mars", marsState, "moon", moonState)
-
   return (
     <div className="wrapper">
       <h1 className="main-title">Welcome to the registration page!</h1>
