@@ -421,3 +421,63 @@ button:focus-visible {
   min-width: 150px;
   height: 50px;
 }
+
+.password-strength-indicator {
+  display: flex;
+  height: 15px;
+  border-radius: 15px;
+  border: 2px solid coral;
+}
+
+.password-strength-indicator .cell {
+  display: none;
+  width: 30px;
+  height: 100%;
+
+}
+
+.password-strength-indicator .cell:nth-child(1) {
+  display: initial;
+  background: red;
+}
+
+.password-strength-indicator .cell:nth-child(2) {
+  display: initial;
+  background: linear-gradient(to right, red, orange);
+}
+
+.password-strength-indicator .cell:nth-child(3) {
+  display: initial;
+  background: orange;
+
+}
+
+.password-strength-indicator .cell:nth-child(4) {
+  display: initial;
+  background: linear-gradient(to right, orange, yellow);
+}
+
+.password-strength-indicator .cell:nth-child(5) {
+  display: initial;
+  background: yellow;
+}
+
+.password-strength-indicator .cell:nth-child(6) {
+  display: initial;
+  background: linear-gradient(to right, yellow, lightgreen);
+}
+
+.password-strength-indicator .cell:nth-child(7) {
+  display: initial;
+  background: linear-gradient(to right, lightgreen, green);
+}
+
+.password-strength-indicator .cell:nth-child(8) {
+  display: initial;
+  background: linear-gradient(to right, green, green);
+}
+
+.password-strength {
+  font-size: 16px;
+
+}

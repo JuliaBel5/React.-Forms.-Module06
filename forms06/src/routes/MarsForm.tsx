@@ -16,7 +16,7 @@ const schema = yup.object().shape({
   age: yup
     .number()
     .required('Please, enter your age')
-    .positive('Please, enter valid a number')
+    .positive('Please, enter a valid number')
     .integer('Please. enter a number'),
   email: yup.string().required('Please, enter your e-mail address').email(),
   password: yup
@@ -26,6 +26,7 @@ const schema = yup.object().shape({
       /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/,
       'Password should contain at least 1 uppercase letter, 1 lowercase letter, 1 number, and 1 special character',
     ),
+
   confirmPassword: yup
     .string()
     .oneOf([yup.ref('password')], 'Passwords must match')
@@ -72,6 +73,8 @@ export function MarsForm() {
   const navigate = useNavigate()
   const [errors, setErrors] = useState<Errors>({})
 
+  const [_passwordSt, setPassword] = useState('')
+  const [passwordStrength, setPasswordStrength] = useState(0)
   const firstName = useRef<HTMLInputElement>(null)
   const lastName = useRef<HTMLInputElement>(null)
   const age = useRef<HTMLInputElement>(null)
@@ -82,6 +85,38 @@ export function MarsForm() {
   const termsAndConditions = useRef<HTMLInputElement>(null)
   const picture = useRef<HTMLInputElement>(null)
   const country = useRef<HTMLSelectElement>(null)
+
+  function handlePasswordChange(event: { target: { value: string } }) {
+    const newPassword = event.target.value
+    setPassword(newPassword)
+
+    let strength = 0
+    if (newPassword.length <= 2 && newPassword.length > 0) {
+      strength = 1
+    } else if (newPassword.length <= 4) {
+      strength = 2
+    } else if (newPassword.length <= 6) {
+      strength = 3
+    } else if (newPassword.length === 7) {
+      strength = 4
+    } else {
+      strength = 5
+    }
+
+    setPasswordStrength(strength)
+  }
+  const keyword =
+    passwordStrength === 0
+      ? ''
+      : passwordStrength === 1
+        ? 'Very weak'
+        : passwordStrength === 2
+          ? 'Weak'
+          : passwordStrength === 3
+            ? 'Medium'
+            : passwordStrength === 4
+              ? 'Strong'
+              : 'Very Strong'
 
   const onSubmit = async (event: { preventDefault: () => void }) => {
     event.preventDefault()
@@ -137,7 +172,21 @@ export function MarsForm() {
         {errors.age && <p className="errorFieldMars">{errors.age}</p>}
         <input ref={email} placeholder="E-mail" />
         {errors.email && <p className="errorFieldMars">{errors.email}</p>}
-        <input ref={password} type="password" placeholder="Password" />
+        <input
+          ref={password}
+          type="password"
+          placeholder="Password"
+          onChange={handlePasswordChange}
+        />
+
+        <div className="password-strength-indicator">
+          {Array.from({ length: 8 }).map((_, i) => {
+            return _passwordSt.length > i ? (
+              <div key={i} className="cell" />
+            ) : null
+          })}
+        </div>
+        <div className="password-strength">Password strength: {keyword}</div>
         {errors.password && <p className="errorFieldMars">{errors.password}</p>}
         <input
           ref={confirmPassword}

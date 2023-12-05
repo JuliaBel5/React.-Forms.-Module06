@@ -1,5 +1,8 @@
 /* eslint-disable jsx-a11y/no-noninteractive-element-to-interactive-role */
-/*import React, { forwardRef, useEffect, useMemo, useRef, useState } from 'react'
+import './Autocomplete.css'
+import React, { forwardRef, useEffect, useMemo, useRef, useState } from 'react'
+import { ControllerRenderProps } from 'react-hook-form'
+import { FormValues } from '../routes/MoonForm'
 import countries from '../utils/countries.json'
 
 type UseOutsideClick = (callback: () => void) => {
@@ -12,7 +15,6 @@ const useOutsideClick: UseOutsideClick = (callback) => {
   useEffect(() => {
     const handleClickOutside = (event: Event) => {
       if (
-        //если клик был вне элемента
         refOutsideElement.current &&
         !refOutsideElement.current.contains(event.target as Node)
       ) {
@@ -31,9 +33,12 @@ const useOutsideClick: UseOutsideClick = (callback) => {
 
 const countryNames = countries.map((country) => country.name)
 
-export const Select = () => {
+export const Select = ({
+  onChange,
+  value: selectedValue,
+}: ControllerRenderProps<FormValues, 'country'>) => {
   const [show, setShow] = useState<boolean>(false)
-  const [value, setValue] = useState<string | null>(null)
+  const [value, setValue] = useState<string>(selectedValue)
 
   const { refOutsideElement } = useOutsideClick(() => setShow(false))
 
@@ -46,13 +51,16 @@ export const Select = () => {
   }, [value])
 
   return (
-    <div ref={refOutsideElement}>
+    <div ref={refOutsideElement} className="autocomplete">
       <input
         className="select"
         type="text"
-        value={value || ''}
+        value={value}
         onFocus={() => setShow(true)}
-        onChange={(event) => setValue(event.target.value)}
+        onChange={(event) => {
+          setValue(event.target.value)
+          onChange(event)
+        }}
       />
       {show &&
         (filtred.length > 0 ? (
@@ -64,6 +72,7 @@ export const Select = () => {
                   role="button"
                   tabIndex={0}
                   onClick={() => {
+                    onChange(item)
                     setValue(item)
                     setShow(false)
                   }}
@@ -79,4 +88,3 @@ export const Select = () => {
     </div>
   )
 }
-*/

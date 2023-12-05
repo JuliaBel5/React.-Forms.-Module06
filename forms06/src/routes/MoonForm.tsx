@@ -1,13 +1,13 @@
 import { yupResolver } from '@hookform/resolvers/yup'
-import { useForm } from 'react-hook-form'
+import { useState } from 'react'
+import { Controller, useForm } from 'react-hook-form'
 import { useNavigate } from 'react-router-dom'
 import * as yup from 'yup'
-//import { Select } from '../components/Autocomplete'
+import { Select } from '../components/Autocomplete'
 import { marsActions, useAppDispatch } from '../store/MarsSlice'
 import { moonActions } from '../store/MoonSlice'
-import countries from '../utils/countries.json'
 
-interface FormValues {
+export interface FormValues {
   firstName: string
   lastName: string
   age: number
@@ -81,11 +81,44 @@ const schema = yup.object().shape({
 
 export function MoonForm() {
   const dispatch = useAppDispatch()
+  const [_passwordSt, setPassword] = useState('')
+  const [passwordStrength, setPasswordStrength] = useState(0)
+  function handlePasswordChange(event: { target: { value: string } }) {
+    const newPassword = event.target.value
+    setPassword(newPassword)
+
+    let strength = 0
+    if (newPassword.length <= 2 && newPassword.length > 0) {
+      strength = 1
+    } else if (newPassword.length <= 4) {
+      strength = 2
+    } else if (newPassword.length <= 6) {
+      strength = 3
+    } else if (newPassword.length === 7) {
+      strength = 4
+    } else {
+      strength = 5
+    }
+
+    setPasswordStrength(strength)
+  }
+  const keyword =
+    passwordStrength === 0
+      ? ''
+      : passwordStrength === 1
+        ? 'Very weak'
+        : passwordStrength === 2
+          ? 'Weak'
+          : passwordStrength === 3
+            ? 'Medium'
+            : passwordStrength === 4
+              ? 'Strong'
+              : 'Very Strong'
 
   const {
     register,
     handleSubmit,
-    setValue,
+    control,
     formState: { errors, isDirty, isValid },
   } = useForm<FormValues>({
     resolver: yupResolver(schema),
@@ -131,7 +164,16 @@ export function MoonForm() {
           {...register('password')}
           type="password"
           placeholder="Password"
+          onChange={handlePasswordChange}
         />
+        <div className="password-strength-indicator">
+          {Array.from({ length: 8 }).map((_, i) => {
+            return _passwordSt.length > i ? (
+              <div key={i} className="cell" />
+            ) : null
+          })}
+        </div>
+        <div className="password-strength">Password strength: {keyword}</div>
         {errors.password && (
           <p className="errorField">Please, enter a valid password</p>
         )}
@@ -183,7 +225,18 @@ export function MoonForm() {
           <p className="errorField">{errors.picture.message}</p>
         )}
 
-        <select
+        <Controller<FormValues, 'country'>
+          render={({ field }) => {
+            return <Select {...field} />
+          }}
+          name="country"
+          control={control}
+        />
+        {errors.country && (
+          <p className="errorField">{errors.country.message}</p>
+        )}
+
+        {/* <select
           {...register('country', { required: 'You should choose a country' })}
         >
           <option value="">Select the country</option>
@@ -195,7 +248,7 @@ export function MoonForm() {
         </select>
         {errors.country && (
           <p className="errorField">{errors.country.message}</p>
-        )}
+        )}*/}
         <button
           type="submit"
           disabled={!isDirty || !isValid}
