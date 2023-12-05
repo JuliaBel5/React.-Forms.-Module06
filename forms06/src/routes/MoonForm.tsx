@@ -19,6 +19,9 @@ export interface FormValues {
   picture: FileList
   country: string
 }
+interface KeywordType {
+  [key: string]: string
+}
 
 const schema = yup.object().shape({
   firstName: yup
@@ -86,6 +89,10 @@ export function MoonForm() {
   function handlePasswordChange(event: { target: { value: string } }) {
     const newPassword = event.target.value
     setPassword(newPassword)
+    if (!newPassword) {
+      setPasswordStrength(0)
+      return
+    }
 
     let strength = 0
     if (newPassword.length <= 2 && newPassword.length > 0) {
@@ -102,18 +109,17 @@ export function MoonForm() {
 
     setPasswordStrength(strength)
   }
-  const keyword =
-    passwordStrength === 0
-      ? ''
-      : passwordStrength === 1
-        ? 'Very weak'
-        : passwordStrength === 2
-          ? 'Weak'
-          : passwordStrength === 3
-            ? 'Medium'
-            : passwordStrength === 4
-              ? 'Strong'
-              : 'Very Strong'
+  const keywords: KeywordType = {
+    0: '',
+    1: 'Very weak',
+    2: 'Weak',
+    3: 'Medium',
+    4: 'Strong',
+    max: 'Very Strong',
+  }
+
+  const key = passwordStrength > 4 ? keywords.max : passwordStrength
+  const keyword = keywords[key]
 
   const {
     register,
@@ -166,14 +172,20 @@ export function MoonForm() {
           placeholder="Password"
           onChange={handlePasswordChange}
         />
-        <div className="password-strength-indicator">
-          {Array.from({ length: 8 }).map((_, i) => {
-            return _passwordSt.length > i ? (
-              <div key={i} className="cell" />
-            ) : null
-          })}
-        </div>
-        <div className="password-strength">Password strength: {keyword}</div>
+        {Boolean(passwordStrength) && (
+          <>
+            <div className="password-strength-indicator">
+              {Array.from({ length: 8 }).map((_, i) => {
+                return _passwordSt.length > i ? (
+                  <div key={i} className="cell" />
+                ) : null
+              })}
+            </div>
+            <div className="password-strength">
+              Password strength: {keyword}
+            </div>
+          </>
+        )}
         {errors.password && (
           <p className="errorField">Please, enter a valid password</p>
         )}

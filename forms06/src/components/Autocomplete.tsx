@@ -1,6 +1,6 @@
 /* eslint-disable jsx-a11y/no-noninteractive-element-to-interactive-role */
 import './Autocomplete.css'
-import React, { forwardRef, useEffect, useMemo, useRef, useState } from 'react'
+import React, { useEffect, useMemo, useRef, useState } from 'react'
 import { ControllerRenderProps } from 'react-hook-form'
 import { FormValues } from '../routes/MoonForm'
 import countries from '../utils/countries.json'

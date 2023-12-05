@@ -4,6 +4,10 @@ import * as yup from 'yup'
 import { marsActions, useAppDispatch } from '../store/MarsSlice'
 import countries from '../utils/countries.json'
 
+interface KeywordType {
+  [key: string]: string
+}
+
 const schema = yup.object().shape({
   firstName: yup
     .string()
@@ -90,6 +94,11 @@ export function MarsForm() {
     const newPassword = event.target.value
     setPassword(newPassword)
 
+    if (!newPassword) {
+      setPasswordStrength(0)
+      return
+    }
+
     let strength = 0
     if (newPassword.length <= 2 && newPassword.length > 0) {
       strength = 1
@@ -99,24 +108,23 @@ export function MarsForm() {
       strength = 3
     } else if (newPassword.length === 7) {
       strength = 4
-    } else {
+    } else if (newPassword.length > 7) {
       strength = 5
     }
 
     setPasswordStrength(strength)
   }
-  const keyword =
-    passwordStrength === 0
-      ? ''
-      : passwordStrength === 1
-        ? 'Very weak'
-        : passwordStrength === 2
-          ? 'Weak'
-          : passwordStrength === 3
-            ? 'Medium'
-            : passwordStrength === 4
-              ? 'Strong'
-              : 'Very Strong'
+  const keywords: KeywordType = {
+    0: '',
+    1: 'Very weak',
+    2: 'Weak',
+    3: 'Medium',
+    4: 'Strong',
+    5: 'Very Strong',
+  }
+
+  const key = passwordStrength > 4 ? keywords[5] : passwordStrength
+  const keyword = keywords[key]
 
   const onSubmit = async (event: { preventDefault: () => void }) => {
     event.preventDefault()
@@ -179,14 +187,20 @@ export function MarsForm() {
           onChange={handlePasswordChange}
         />
 
-        <div className="password-strength-indicator">
-          {Array.from({ length: 8 }).map((_, i) => {
-            return _passwordSt.length > i ? (
-              <div key={i} className="cell" />
-            ) : null
-          })}
-        </div>
-        <div className="password-strength">Password strength: {keyword}</div>
+        {Boolean(passwordStrength) && (
+          <>
+            <div className="password-strength-indicator">
+              {Array.from({ length: 15 }).map((_, i) => {
+                return _passwordSt.length > i ? (
+                  <div key={i} className="cell" />
+                ) : null
+              })}
+            </div>
+            <div className="password-strength">
+              Password strength: {keyword}
+            </div>
+          </>
+        )}
         {errors.password && <p className="errorFieldMars">{errors.password}</p>}
         <input
           ref={confirmPassword}
