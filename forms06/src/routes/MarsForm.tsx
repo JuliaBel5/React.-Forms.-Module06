@@ -123,8 +123,7 @@ export function MarsForm() {
     5: 'Very Strong',
   }
 
-  const key = passwordStrength > 4 ? keywords[5] : passwordStrength
-  const keyword = keywords[key]
+  const keyword = keywords[passwordStrength]
 
   const onSubmit = async (event: { preventDefault: () => void }) => {
     event.preventDefault()

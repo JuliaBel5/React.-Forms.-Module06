@@ -103,7 +103,7 @@ export function MoonForm() {
       strength = 3
     } else if (newPassword.length === 7) {
       strength = 4
-    } else {
+    } else if (newPassword.length > 7) {
       strength = 5
     }
 
@@ -115,11 +115,10 @@ export function MoonForm() {
     2: 'Weak',
     3: 'Medium',
     4: 'Strong',
-    max: 'Very Strong',
+    5: 'Very Strong',
   }
 
-  const key = passwordStrength > 4 ? keywords.max : passwordStrength
-  const keyword = keywords[key]
+  const keyword = keywords[passwordStrength]
 
   const {
     register,
@@ -175,7 +174,7 @@ export function MoonForm() {
         {Boolean(passwordStrength) && (
           <>
             <div className="password-strength-indicator">
-              {Array.from({ length: 8 }).map((_, i) => {
+              {Array.from({ length: 15 }).map((_, i) => {
                 return _passwordSt.length > i ? (
                   <div key={i} className="cell" />
                 ) : null
