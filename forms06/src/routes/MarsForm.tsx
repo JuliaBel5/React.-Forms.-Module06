@@ -105,6 +105,7 @@ export function MarsForm() {
       })
       console.log(_values)
       dispatch(marsActions.setMarsState(_values))
+      dispatch(marsActions.setMarsTilesNumber(1))
       navigate('/')
     } catch (error) {
       if (error instanceof yup.ValidationError) {

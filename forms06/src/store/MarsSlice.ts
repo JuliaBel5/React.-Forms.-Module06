@@ -32,7 +32,7 @@ export const marsSlice = createSlice({
     setMarsState: (state, action) => {
       state.marsData.push(action.payload)
     },
-    setMoonTilesNumber: (state, action) => {
+    setMarsTilesNumber: (state, action) => {
       state.marsTilesNumber = action.payload
     },
   },

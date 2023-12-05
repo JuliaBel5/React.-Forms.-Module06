@@ -6,6 +6,7 @@ import { useAppSelector } from '../store/MarsSlice'
 export const RegistrationPage = () => {
   const moonState = useAppSelector((state) => state.moon.moonData)
   const marsState = useAppSelector((state) => state.mars.marsData)
+  const key = useAppSelector((state) => state.mars.marsTilesNumber)
 
   return (
     <div className="wrapper">
@@ -28,12 +29,25 @@ export const RegistrationPage = () => {
       </div>
       <h2>Our passengers:</h2>
       <div className="tile-container">
-        {moonState.map((data: MoonState, index: number) => (
-          <Tile key={index} data={data} />
-        ))}
-        {marsState.map((data: MoonState, index: number) => (
-          <MarsTile key={index} data={data} />
-        ))}
+        {key === 1 ? (
+          <>
+            {moonState.map((data: MoonState, index: number) => (
+              <Tile key={index} data={data} />
+            ))}
+            {marsState.map((data: MoonState, index: number) => (
+              <MarsTile key={index} data={data} />
+            ))}
+          </>
+        ) : (
+          <>
+            {marsState.map((data: MoonState, index: number) => (
+              <MarsTile key={index} data={data} />
+            ))}
+            {moonState.map((data: MoonState, index: number) => (
+              <Tile key={index} data={data} />
+            ))}
+          </>
+        )}
       </div>
     </div>
   )

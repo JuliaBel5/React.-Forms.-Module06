@@ -3,7 +3,7 @@ import { useForm } from 'react-hook-form'
 import { useNavigate } from 'react-router-dom'
 import * as yup from 'yup'
 //import { Select } from '../components/Autocomplete'
-import { useAppDispatch } from '../store/MarsSlice'
+import { marsActions, useAppDispatch } from '../store/MarsSlice'
 import { moonActions } from '../store/MoonSlice'
 import countries from '../utils/countries.json'
 
@@ -97,7 +97,7 @@ export function MoonForm() {
   const onSubmit = (data: FormValues) => {
     console.log(data)
     dispatch(moonActions.setMoonState(data))
-
+    dispatch(marsActions.setMarsTilesNumber(0))
     navigate('/')
   }
 
