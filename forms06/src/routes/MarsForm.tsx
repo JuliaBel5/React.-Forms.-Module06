@@ -30,7 +30,10 @@ const schema = yup.object().shape({
     .string()
     .oneOf([yup.ref('password')], 'Passwords must match')
     .required('Confirm Password is required'),
-  gender: yup.string().required('Please, make your choice'),
+  gender: yup
+    .string()
+    .oneOf(['Male', 'Female'], 'Please, make your choice')
+    .required('Please, make your choice'),
   termsAndConditions: yup
     .boolean()
     .oneOf([true], 'You must accept the terms and conditions')
@@ -38,19 +41,24 @@ const schema = yup.object().shape({
   picture: yup
     .mixed<FileList>()
     .required('Please upload a picture')
-    /* .test('fileSize', 'The file is too large', (value) => {
-      return value && value[0].size <= 2000000
+    .test('fileSize', 'The file is too large', (_, { originalValue }) => {
+      const file = originalValue[0]
+
+      if (file) {
+        return file.size <= 2000000
+      }
     })
-     .test(
+    .test(
       'type',
-      'Only the following formats are accepted: .jpeg, .jpg, .bmp, .pdf and .doc',
-      (value) => {
-        return (
-          value &&
-          ['image/jpg', 'image/jpeg', 'image/png'].includes(value[0].type)
-        )
+      'Only the following formats are accepted: .jpeg, .jpg, .png',
+      (_, { originalValue }) => {
+        const file = originalValue[0]
+
+        if (file) {
+          return ['image/jpg', 'image/jpeg', 'image/png'].includes(file.type)
+        }
       },
-    )*/
+    )
     .transform((value: FileList) => {
       if (value.length === 0) return value
       return URL.createObjectURL(value[0])

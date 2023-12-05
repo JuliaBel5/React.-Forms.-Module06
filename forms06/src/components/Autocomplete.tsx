@@ -1,5 +1,5 @@
 /* eslint-disable jsx-a11y/no-noninteractive-element-to-interactive-role */
-import React, { forwardRef, useEffect, useMemo, useRef, useState } from 'react'
+/*import React, { forwardRef, useEffect, useMemo, useRef, useState } from 'react'
 import countries from '../utils/countries.json'
 
 type UseOutsideClick = (callback: () => void) => {
@@ -79,3 +79,4 @@ export const Select = () => {
     </div>
   )
 }
+*/
