@@ -1,0 +1,483 @@
+:root {
+  font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
+  line-height: 1.5;
+  font-weight: 400;
+
+  color-scheme: light dark;
+  color: rgba(255, 255, 255, 0.87);
+  background-color: #242424;
+
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+a {
+  font-weight: 500;
+  color: #646cff;
+  text-decoration: inherit;
+}
+
+a:hover {
+  color: #535bf2;
+}
+
+body {
+  margin: 0;
+  display: flex;
+  place-items: center;
+  width: 100vw;
+  min-height: 100vh;
+  background-color: #070225;
+  background-image: url('./assets/background.jpg');
+  background-size: cover;
+  background-repeat: repeat;
+
+}
+
+h1 {
+  font-size: 3.2em;
+  line-height: 1.1;
+}
+
+.main-title {
+  font-size: 2em;
+}
+
+h2 {
+  font-size: 1.5em;
+}
+
+button {
+  border-radius: 8px;
+  border: 1px solid transparent;
+  padding: 0.6em 1.2em;
+  font-size: 1em;
+  font-weight: 500;
+  font-family: inherit;
+  background-color: #1a1a1a;
+  cursor: pointer;
+  transition: border-color 0.25s;
+}
+
+button:hover {
+  border-color: #646cff;
+}
+
+button:focus,
+button:focus-visible {
+  outline: 4px auto -webkit-focus-ring-color;
+}
+
+@media (prefers-color-scheme: light) {
+  :root {
+    color: #213547;
+    background-color: #ffffff;
+  }
+
+  a:hover {
+    color: #747bff;
+  }
+
+  button {
+    background-color: #f9f9f9;
+  }
+}
+
+.app {
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  align-content: center;
+}
+
+
+
+
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  align-content: center;
+  color: rgba(240, 240, 208, 0.87)
+}
+
+.buttons {
+  display: flex;
+  gap: 40px;
+
+}
+
+.moonIcon {
+  width: 30px;
+  height: 30px;
+  background-image: url(/src/assets/moon-icon.png);
+  background-size: cover;
+  background-repeat: no-repeat;
+}
+
+.marsIcon {
+  width: 30px;
+  height: 30px;
+  background-image: url(/src/assets/mars-icon.png);
+  background-size: cover;
+  background-repeat: no-repeat;
+}
+
+.moonButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 15px;
+  width: 300px;
+  border-radius: 40px;
+  height: 50px;
+  /*background-image: linear-gradient(to right, #add8e6, #28284f);*/
+  padding: 5px 20px;
+  color: #f0e1c5;
+  background: rgba(200, 116, 222, 0.19);
+  border-radius: 16px;
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+  border: 2px solid rgba(227, 213, 98, 1);
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.moonButton:hover {
+  background-image: linear-gradient(to right, #d1b3f3, #220440);
+  transform: scale(1.05);
+  color: #f7f8e9;
+}
+
+
+
+.marsButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 15px;
+  border-radius: 40px;
+  height: 50px;
+  width: 300px;
+  /* background-image: linear-gradient(to right, #c37783, #371936);*/
+
+  padding: 5px 20px;
+  color: #f0e1c5;
+  background: rgba(241, 114, 114, 0.19);
+  border-radius: 16px;
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+  border: 2px solid rgba(231, 95, 95, 1);
+  cursor: pointer;
+  transition: all 0.3s ease;
+
+}
+
+.marsButton:hover {
+  background-image: linear-gradient(to right, #d1b3f3, #220440);
+  transform: scale(1.05);
+  color: #e9ecc3;
+}
+
+@keyframes rotate {
+  0% {
+    transform: rotate(0deg);
+  }
+
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+.moonButton:hover .moonIcon,
+.marsButton:hover .marsIcon {
+  animation: rotate 2s linear infinite;
+}
+
+.mars {
+  min-width: 100vw;
+  min-height: 100vh;
+
+  background: url(/src/assets/mars.jpeg);
+  background-size: cover;
+  background-repeat: no-repeat;
+}
+
+.moon {
+  min-width: 100vw;
+  min-height: 100vh;
+
+  background: url(/src/assets/moon.png);
+  background-size: cover;
+  background-repeat: no-repeat;
+}
+
+
+.mars-form {
+  margin: 10px auto;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  align-content: center;
+  color: rgba(7, 3, 62, 0.87);
+  font-weight: 400;
+  font-size: 24px;
+  gap: 20px;
+  border: 2px solid rgba(231, 95, 95, 0.8);
+  border-radius: 7px;
+  background: rgba(242, 245, 212, 0.19);
+  border-radius: 16px;
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+  width: 40%;
+  height: 95vh;
+}
+
+
+.moon-form {
+  margin: 10px auto;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  align-content: center;
+  color: rgba(7, 3, 62, 0.87);
+  font-weight: 400;
+  font-size: 24px;
+  gap: 20px;
+  border: 2px solid rgba(231, 95, 95, 0.8);
+  border-radius: 7px;
+  background: rgba(242, 245, 212, 0.19);
+  border-radius: 16px;
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+  width: 40%;
+  height: 95vh;
+}
+
+.moon-form label {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 1;
+}
+
+.moon-form input {
+  width: 300px;
+  height: 30px;
+  padding: 5px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+}
+
+.submitButton {
+  margin-top: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 15px;
+  width: 300px;
+  border-radius: 40px;
+  height: 50px;
+  padding: 5px 20px;
+  color: #f0e1c5;
+  background: rgba(200, 116, 222, 0.19);
+  border-radius: 16px;
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+  border: 2px solid rgba(51, 26, 72, 0.8);
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.submitButton:disabled {
+  background: #ddd;
+  color: #999;
+  cursor: not-allowed;
+}
+
+.tile-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  margin-top: 15px;
+}
+
+.tile {
+  display: flex;
+  flex-direction: column;
+  flex: 0 0 calc(33.33% - 20px);
+  align-content: center;
+  align-items: center;
+  min-width: 150px;
+  font-size: 16px;
+  padding: 5px;
+  border: 2px solid rgba(241, 232, 62, 0.8);
+  border-radius: 7px;
+  background: rgba(242, 245, 212, 0.19);
+  border-radius: 16px;
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+}
+
+.mars-tile {
+  display: flex;
+  flex-direction: column;
+  flex: 0 0 calc(33.33% - 20px);
+  align-content: center;
+  align-items: center;
+  min-width: 150px;
+  font-size: 16px;
+  padding: 5px;
+  border: 2px solid rgba(231, 95, 95, 0.8);
+  border-radius: 7px;
+  background: rgba(242, 245, 212, 0.19);
+  border-radius: 16px;
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+}
+
+.tile-title {
+  font-size: 20px;
+  font-weight: 600;
+  color: rgba(203, 68, 227, 0.87)
+}
+
+.tile-line {
+  text-align: start;
+}
+
+.tile:last-child {
+  animation: highlight 3s linear alternate both;
+}
+
+.mars-tile:last-child {
+  animation: highlight 3s linear alternate both;
+}
+
+@keyframes highlight {
+  0% {
+    background-color: #b67ced;
+    background-position: 50% 100%;
+  }
+
+  99% {
+    background-color: #ea8ad4;
+    background-position: 50% 0%;
+  }
+
+  100% {
+    background-color: none;
+  }
+}
+
+.errorField {
+  margin: -9px auto;
+  color: rgb(214, 13, 13);
+  font-size: 18px;
+  font-weight: 600;
+  line-height: 1;
+  margin-block-start: 0;
+  margin-block-end: 0;
+}
+
+.errorFieldMars {
+  margin: -9px auto;
+  color: rgb(248, 240, 91);
+  font-size: 18px;
+  font-weight: 600;
+  line-height: 1;
+  margin-block-start: 0;
+  margin-block-end: 0;
+}
+
+
+.moon-form .radio-buttons {
+  display: flex;
+  justify-content: space-between;
+  font-size: 18px;
+
+}
+
+.moon-form .radio-buttons {
+  display: flex;
+  justify-content: space-between;
+  max-width: 250px;
+
+}
+
+.moon-form .radioButton {
+  width: 20px;
+  height: 20px;
+  margin: 5px;
+  font-size: 12px;
+}
+
+.tile-img {
+  height: 100px;
+  margin: auto;
+}
+
+.select {
+  color: rgba(37, 43, 97, 0.5);
+  min-width: 150px;
+  height: 50px;
+}
+
+.password-strength-indicator {
+  display: flex;
+  height: 15px;
+  border-radius: 15px;
+  border: 2px solid coral;
+}
+
+.password-strength-indicator .cell {
+  display: none;
+  width: 30px;
+  height: 100%;
+
+}
+
+.password-strength-indicator .cell:nth-child(1) {
+  display: initial;
+  background: red;
+}
+
+.password-strength-indicator .cell:nth-child(2) {
+  display: initial;
+  background: linear-gradient(to right, red, orange);
+}
+
+.password-strength-indicator .cell:nth-child(3) {
+  display: initial;
+  background: orange;
+
+}
+
+.password-strength-indicator .cell:nth-child(4) {
+  display: initial;
+  background: linear-gradient(to right, orange, yellow);
+}
+
+.password-strength-indicator .cell:nth-child(5) {
+  display: initial;
+  background: yellow;
+}
+
+.password-strength-indicator .cell:nth-child(6) {
+  display: initial;
+  background: linear-gradient(to right, yellow, lightgreen);
+}
+
+.password-strength-indicator .cell:nth-child(7) {
+  display: initial;
+  background: linear-gradient(to right, lightgreen, green);
+}
+
+.password-strength-indicator .cell:nth-child(8) {
+  display: initial;
+  background: linear-gradient(to right, green, green);
+}
+
+.password-strength {
+  font-size: 16px;
+
+}

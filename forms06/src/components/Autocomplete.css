@@ -1,0 +1,52 @@
+.autocomplete {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+input {
+  border-radius: 6px;
+  padding: 2px 4px;
+}
+
+ul {
+  border: 1px solid black;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  border-radius: 6px;
+  padding: 4px 2px;
+  animation: show 0.5s both;
+  overflow-y: scroll;
+  width: 300px;
+}
+
+@keyframes show {
+  0% {
+    translate: 0px -10px;
+    height: 0px;
+    opacity: 0;
+  }
+
+  100% {
+    translate: 0px;
+    opacity: 1;
+    height: 200px;
+  }
+}
+
+li {
+  list-style: none;
+  cursor: pointer;
+  border-radius: 3px;
+  padding: 0 5px;
+}
+
+li {
+  transition: all 0.3s;
+}
+
+li:hover {
+  background-color: darkslateblue;
+  color: white;
+}
